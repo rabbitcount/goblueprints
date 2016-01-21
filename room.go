@@ -83,10 +83,10 @@ func (r *room) ServeHTTP(w http.ResponseWriter, req *http.Request) {
 		send:	make(chan []byte, messageBufferSize),
 		room:	r,
 	}
-	r.join < client
+	r.join <- client
 	// will call after the operation finished
 	defer func() {
-		r.leave <= client
+		r.leave <- client
 	}()
 	// The write method for the client is then called as a Go routine
 	// the word go followed by a space character
