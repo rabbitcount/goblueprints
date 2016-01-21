@@ -27,22 +27,15 @@ func (t *templateHandler) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 }
 
 func main()  {
-//	http.HandleFunc("/", func(w http.ResponseWriter, r *http.Request) {
-//		w.Write([]byte(`
-//			<html>
-//				<head>
-//					<title>Chat</title>
-//				</head>
-//				<body>
-//					Let's chat!
-//				</body>
-//			</html>
-//		`))
-//	})
-	// root use own defined handler
-	// We do not store a reference to our newly created templateHandler type,
-	// but that's OK because we don't need to refer to it again.
+	r := newRoom()
 	http.Handle("/", &templateHandler{filename: "chat.html"})
+	http.Handle("/room", r)
+	// get the room going
+	// running the room in a separate Go routine
+	// so that the chatting operations occur in the background,
+	// allowing our main thread to run the web server.
+	go r.run()
+	// start the web server
 	if err := http.ListenAndServe(":8080", nil); err != nil {
 		log.Fatal("ListenAndServe:", err)
 	}

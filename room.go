@@ -19,6 +19,8 @@ type room struct {
 }
 
 // newRoom makes a new room hat is ready to go.
+// the users of our code need only call the newRoom function
+// instead of the more verbose six lines of code.
 func newRoom() *room {
 	return &room{
 		forward:	make(chan []byte),
