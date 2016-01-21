@@ -4,9 +4,11 @@ import (
 	"log"
 	"net/http"
 	"sync"
-"text/template"
+	"text/template"
 	"path/filepath"
 	"flag"
+	"os"
+	"github.com/rabbitcount/goblueprints/trace"
 )
 
 // templ represents a single template
@@ -37,6 +39,8 @@ func main()  {
 	// Then, we can reference the value of the host  ag by using *addr.
 	flag.Parse() // parse the flags
 	r := newRoom()
+	r.tracer = trace.New(os.Stdout)
+
 	http.Handle("/", &templateHandler{filename: "chat.html"})
 	http.Handle("/room", r)
 	// get the room going
