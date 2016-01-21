@@ -18,6 +18,16 @@ type room struct {
 	clients map[*client] bool
 }
 
+// newRoom makes a new room hat is ready to go.
+func newRoom() *room {
+	return &room{
+		forward:	make(chan []byte),
+		join:		make(chan *client),
+		leave:		make(chan *client),
+		clients:	make(map[*client]bool),
+	}
+}
+
 func (r *room) run()  {
 	// indicates that this method will run forever, until the program is terminated
 	// if run this code as a Go routine, it will run in the background,
