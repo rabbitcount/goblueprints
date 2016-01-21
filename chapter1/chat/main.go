@@ -8,7 +8,7 @@ import (
 	"path/filepath"
 	"flag"
 	"os"
-	"github.com/rabbitcount/goblueprints/trace"
+	"github.com/rabbitcount/goblueprints/chapter1/trace"
 )
 
 // templ represents a single template

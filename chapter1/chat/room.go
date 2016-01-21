@@ -3,7 +3,7 @@ import (
 	"github.com/gorilla/websocket"
 	"net/http"
 	"log"
-	"github.com/rabbitcount/goblueprints/trace"
+	"github.com/rabbitcount/goblueprints/chapter1/trace"
 )
 
 type room struct {
