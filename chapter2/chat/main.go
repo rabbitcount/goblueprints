@@ -50,7 +50,7 @@ func main()  {
 		github.New("key", "secret", ""),
 		google.New("151570833065-i9p63mogjm7adt0h0490or9bvqua0r2l.apps.googleusercontent.com",
 			"jzEEORYarixD30S6qyosGrWe",
-			"http://localhost:8080/auth/callback/google"),
+			"http://localhost:3000/auth/callback/google"),
 	)
 
 	r := newRoom()
