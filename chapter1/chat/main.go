@@ -4,11 +4,11 @@ import (
 	"log"
 	"net/http"
 	"sync"
-	"text/template"
 	"path/filepath"
 	"flag"
 	"os"
 	"github.com/rabbitcount/goblueprints/chapter1/trace"
+	"text/template"
 )
 
 // templ represents a single template
@@ -25,7 +25,10 @@ type templateHandler struct {
 // the output to the speci ed http.ResponseWriter object
 func (t *templateHandler) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 	t.once.Do(func() {
-		t.templ = template.Must(template.ParseFiles(filepath.Join("templates", t.filename)))
+//		cwd, _ := os.Getwd()
+//		fmt.Println( filepath.Join( cwd, "templates", t.filename ) )
+
+		t.templ = template.Must(template.ParseFiles(filepath.Join("chapter1/chat/templates", t.filename)))
 	})
 	t.templ.Execute(w, r)
 }

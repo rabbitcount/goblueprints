@@ -9,6 +9,10 @@ import (
 	"flag"
 	"os"
 	"github.com/rabbitcount/goblueprints/chapter1/trace"
+	"github.com/stretchr/gomniauth"
+	"github.com/stretchr/gomniauth/providers/facebook"
+	"github.com/stretchr/gomniauth/providers/github"
+	"github.com/stretchr/gomniauth/providers/google"
 )
 
 // templ represents a single template
@@ -25,7 +29,7 @@ type templateHandler struct {
 // the output to the speci ed http.ResponseWriter object
 func (t *templateHandler) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 	t.once.Do(func() {
-		t.templ = template.Must(template.ParseFiles(filepath.Join("templates", t.filename)))
+		t.templ = template.Must(template.ParseFiles(filepath.Join("chapter2/chat/templates", t.filename)))
 	})
 	t.templ.Execute(w, r)
 }
@@ -38,10 +42,23 @@ func main()  {
 	// and extracts the appropriate information.
 	// Then, we can reference the value of the host  ag by using *addr.
 	flag.Parse() // parse the flags
+
+	// set up gomniauth
+	gomniauth.SetSecurityKey("some long key")
+	gomniauth.WithProviders(
+		facebook.New("key", "secret", ""),
+		github.New("key", "secret", ""),
+		google.New("151570833065-i9p63mogjm7adt0h0490or9bvqua0r2l.apps.googleusercontent.com",
+			"jzEEORYarixD30S6qyosGrWe",
+			"http://localhost:8080/auth/callback/google"),
+	)
+
 	r := newRoom()
 	r.tracer = trace.New(os.Stdout)
 
 	http.Handle("/chat", MustAuth(&templateHandler{filename: "chat.html"}))
+	http.Handle("/login", &templateHandler{filename: "login.html"})
+	http.HandleFunc("/auth/", loginHandler)
 	http.Handle("/room", r)
 	// get the room going
 	// running the room in a separate Go routine
