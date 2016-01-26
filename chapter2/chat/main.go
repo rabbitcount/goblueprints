@@ -78,6 +78,7 @@ func main()  {
 		w.Header()["Location"] = []string{"/chat"}
 		w.WriteHeader(http.StatusTemporaryRedirect)
 	})
+	http.Handle("/upload", &templateHandler{filename: "upload.html"})
 
 	// get the room going
 	// running the room in a separate Go routine
