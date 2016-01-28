@@ -80,6 +80,9 @@ func main()  {
 	})
 	http.Handle("/upload", &templateHandler{filename: "upload.html"})
 	http.HandleFunc("/uploader", uploaderHandler)
+	http.Handle("/avatars/",
+		http.StripPrefix("chapter2/chat/avatars/",
+			http.FileServer(http.Dir("./avatars"))))
 
 	// get the room going
 	// running the room in a separate Go routine
